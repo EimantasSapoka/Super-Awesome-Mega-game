@@ -67,9 +67,11 @@ public class Player : MovingObject {
 
 	protected override void OnCantMove<T>(T component)
 	{
-		Wall hitWall = component as Wall;
-		hitWall.DamageWall (wallDamage);
-		animator.SetTrigger ("Chop");
+		if (component is Wall) {
+			Wall hitWall = component as Wall;
+			hitWall.DamageWall (wallDamage);
+			animator.SetTrigger ("Chop");
+		}
 
 	}
 

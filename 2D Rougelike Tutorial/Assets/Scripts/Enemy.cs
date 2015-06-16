@@ -10,6 +10,7 @@ public class Enemy : MovingObject {
 	private bool skipMove;
 
 	protected override void Start () {
+		GameManager.instance.AddEnemyToList (this);
 		animator = GetComponent<Animator> ();
 		target = GameObject.FindGameObjectWithTag ("Player").transform;
 		base.Start ();
@@ -35,14 +36,18 @@ public class Enemy : MovingObject {
 			yDir = target.position.y > transform.position.y ? 1 : -1;
 		else 
 			xDir = target.position.x > transform.position.x ? 1 : -1;
+		Debug.Log (string.Format("xDir: {0}, yDir: {1} ", xDir, yDir));
 		AttemptMove<Player> (xDir, yDir);
 
 	}
 
 	protected override void OnCantMove<T>(T component)
 	{
-		Player hitPlayer = component as Player;
-		hitPlayer.LoseFood (playerDamage);
+		if (component is Player) {
+			Player hitPlayer = component as Player;
+			animator.SetTrigger ("Hit");
+			hitPlayer.LoseFood (playerDamage);
+		}
 	}
 
 }
