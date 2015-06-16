@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Player : MovingObject {
 
 	public int wallDamage = 1;
 	public int pointsPerFood = 10;
-	public int pointsPerSoda = 10;
+	public int pointsPerSoda = 20;
 
 	public float restartLevelDelay = 1f;
 
@@ -13,11 +14,12 @@ public class Player : MovingObject {
 
 	private int food;
 
+	public Text foodText;
+
 	// Use this for initialization
 	protected override void Start () {
 		animator = GetComponent<Animator> ();
 		food = GameManager.instance.playerFoodPoints;
-
 		base.Start ();
 	}
 
@@ -25,7 +27,8 @@ public class Player : MovingObject {
 	{
 		GameManager.instance.playerFoodPoints = food;
 	}
-	
+
+
 	// Update is called once per frame
 	void Update () {
 		if (!GameManager.instance.playersTurn)
@@ -46,6 +49,7 @@ public class Player : MovingObject {
 	protected override void AttemptMove<T> (int xDir, int yDir)
 	{
 		food --;
+		foodText.text = "Food: " + food;
 		base.AttemptMove<T> (xDir, yDir);
 		RaycastHit2D hit;
 		CheckIfGameOver ();
@@ -53,15 +57,16 @@ public class Player : MovingObject {
 	}
 	private void OnTriggerEnter2D (Collider2D other)
 	{
-		Debug.Log ("triggered " + other.tag);
 		if (other.tag == "Exit") {
 			Invoke ("Restart", restartLevelDelay);
 			enabled = false;
 		} else if (other.tag == "Food") {
 			food += pointsPerFood;
+			foodText.text = "+"  + pointsPerFood + " Food: " + food;
 			other.gameObject.SetActive (false);
 		} else if (other.tag == "Soda") {
 			food += pointsPerSoda;
+			foodText.text = "+"  + pointsPerSoda + " Food: " + food;
 			other.gameObject.SetActive(false);
 		}
 	}
@@ -85,6 +90,7 @@ public class Player : MovingObject {
 	{
 		animator.SetTrigger ("Player_Hit");
 		food -= loss;
+		foodText.text = "- " + loss + " " + foodText.text;
 		CheckIfGameOver ();
 	}
 
