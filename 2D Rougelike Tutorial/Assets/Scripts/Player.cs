@@ -51,8 +51,9 @@ public class Player : MovingObject {
 		CheckIfGameOver ();
 		GameManager.instance.playersTurn = false;
 	}
-	private void onTriggerEnter2D (Collider2D other)
+	private void OnTriggerEnter2D (Collider2D other)
 	{
+		Debug.Log ("triggered " + other.tag);
 		if (other.tag == "Exit") {
 			Invoke ("Restart", restartLevelDelay);
 			enabled = false;
@@ -82,7 +83,7 @@ public class Player : MovingObject {
 
 	public void LoseFood(int loss)
 	{
-		animator.SetTrigger ("Player_hit");
+		animator.SetTrigger ("Player_Hit");
 		food -= loss;
 		CheckIfGameOver ();
 	}
