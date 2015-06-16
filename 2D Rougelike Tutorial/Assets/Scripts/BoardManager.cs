@@ -54,12 +54,11 @@ public class BoardManager : MonoBehaviour {
 			for (int y = -1; y < rows+1; y++) {
 				GameObject toInstantiate = floorTiles[Random.Range(0, floorTiles.Length)];
 				if (x == -1 || x == columns || y == -1 || y == rows)
-				{
 					toInstantiate = outerWallTiles[Random.Range(0,outerWallTiles.Length)];
-					GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate(toInstantiate, new Vector3(x,y,0f), Quaternion.identity) as GameObject;
 
-					instance.transform.SetParent(boardHolder);
-				}
+				instance.transform.SetParent(boardHolder);
+
 			}
 		}
 
@@ -95,7 +94,7 @@ public class BoardManager : MonoBehaviour {
 		LayoutObjectAtRandom (foodTiles, foodCount.minimum, foodCount.maximum);
 		int enemyCount = (int)Math.Log (level, 2);
 		LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
-		Instantiate (exit, new Vector3 (rows - 1, columns - 1, 0f), Quaternion.identity);
+		Instantiate (exit, new Vector3 (columns-1, rows-1, 0f), Quaternion.identity);
 	}
 
 }
