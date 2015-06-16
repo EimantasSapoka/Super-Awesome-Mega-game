@@ -63,8 +63,8 @@ public class GameManager : MonoBehaviour {
 	{
 		levelText.text = "After " + level + " days, you starved.";
 		levelImage.SetActive (true);
-
 		enabled = false;
+
 	}
 	
 	// Update is called once per frame

@@ -5,6 +5,9 @@ public class Enemy : MovingObject {
 
 	public int playerDamage;
 
+	public AudioClip enemyAttackSound1;
+	public AudioClip enemyAttackSound2;
+
 	private Animator animator;
 	private Transform target;
 	private bool skipMove;
@@ -47,6 +50,7 @@ public class Enemy : MovingObject {
 			Player hitPlayer = component as Player;
 			animator.SetTrigger ("Hit");
 			hitPlayer.LoseFood (playerDamage);
+			SoundManager.instance.RandomizeSfx(enemyAttackSound1, enemyAttackSound2);
 		}
 	}
 
