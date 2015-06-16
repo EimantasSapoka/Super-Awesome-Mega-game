@@ -25,7 +25,7 @@ public abstract class MovingObject : MonoBehaviour {
 		Vector2 end = start + new Vector2 (xDir, yDir);
 
 		boxCollider.enabled = false;
-		hit = Physics2D.Linecast (start, end);
+		hit = Physics2D.Linecast (start, end, blockingLayer);
 		boxCollider.enabled = true;
 
 		if (hit.transform == null) 
@@ -47,7 +47,7 @@ public abstract class MovingObject : MonoBehaviour {
 
 		T hitComponent = hit.transform.GetComponent<T> ();
 
-		if (!canMove && hitComponent == null)
+		if (!canMove && hitComponent != null)
 			OnCantMove (hitComponent);
 	}
 
