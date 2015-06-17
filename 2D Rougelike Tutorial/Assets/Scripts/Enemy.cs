@@ -39,7 +39,7 @@ public class Enemy : MovingObject {
 			yDir = target.position.y > transform.position.y ? 1 : -1;
 		else 
 			xDir = target.position.x > transform.position.x ? 1 : -1;
-		//Debug.Log (string.Format("xDir: {0}, yDir: {1} ", xDir, yDir));
+		Debug.Log (string.Format("xDir: {0}, yDir: {1} ", xDir, yDir));
 		AttemptMove<Player> (xDir, yDir);
 
 	}
