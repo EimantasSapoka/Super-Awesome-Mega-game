@@ -4,9 +4,10 @@ using System.Collections.Generic;
 
 public class BoardManager : MonoBehaviour {
 
-    public int columns = 12;
-    public int rows = 12;
+    public int columns;
+    public int rows;
     public int obstacleCount;
+    private int level;
 
     public GameObject outerWallTiles;
     public GameObject floorTiles;
@@ -27,13 +28,34 @@ public class BoardManager : MonoBehaviour {
 
     public void Awake()
     {
+        level = 3;
         InitList();
         CreateBoard();
         LayoutAtRandomPosition(1, lever);
         LayoutAtRandomPosition(1, exit);
-        LayoutAtRandomPosition(3, chest);
-        LayoutAtRandomPosition(obstacleCount, obstacles);
+        LayoutAtRandomPosition((int) Mathf.Sqrt(level), chest);
+        LayoutObstacles(rows*columns/3, obstacles);
         
+    }
+
+    private void LayoutObstacles(int obstacleCount, GameObject[] obstacles)
+    {
+        while (obstacleCount > 0)
+        {
+            int closeItems = Random.Range(0, (int) Mathf.Sqrt(obstacleCount));
+            closeItems = closeItems == 0 ? 1 : closeItems;
+            Vector2[] itemPositions = GetCloseRandomPositions(closeItems);
+
+            GameObject obstacle = obstacles[Random.Range(0, obstacles.Length)];
+            foreach (Vector2 pos in itemPositions)
+            {
+                Debug.Log("instatiating a " + obstacle);
+                GameObject instance = Instantiate(obstacle, pos, Quaternion.identity) as GameObject;
+                instance.transform.SetParent(boardHolder);
+            }
+
+            obstacleCount -= closeItems;
+        }
     }
 
     void InitList()
@@ -78,12 +100,32 @@ public class BoardManager : MonoBehaviour {
         return randomVector;
     }
 
+    Vector2[] GetCloseRandomPositions(int numPositions)
+    {
+        Vector2[] positions = new Vector2[numPositions];
+        int seedPosition = Random.Range(0, obstaclePositions.Count);
+
+        for (int i = 0; i < numPositions; i++)
+        {
+            int nextPosition = 0;
+            if (obstaclePositions.Count > seedPosition + i)
+                nextPosition = seedPosition + 1;
+            else
+                nextPosition = seedPosition - 1;
+            positions[i] = obstaclePositions[nextPosition];
+            obstaclePositions.RemoveAt(nextPosition);
+        }
+
+        return positions;
+    }
+
     void LayoutAtRandomPosition(int count, params GameObject[] items)
     {
         for (int i = 0; i < count; i++)
 		{
             GameObject instance = Instantiate(items[Random.Range(0, items.Length)], GetRandomPosition(), Quaternion.identity) as GameObject;
             instance.transform.SetParent(boardHolder);
+            
 		}
     }
    
