@@ -4,18 +4,21 @@ using System.Collections.Generic;
 
 public class BoardManager : MonoBehaviour {
 
-    public int columns = 20;
-    public int rows = 20;
+    public int columns = 12;
+    public int rows = 12;
+    public int obstacleCount;
 
     public GameObject outerWallTiles;
     public GameObject floorTiles;
-    public GameObject doors;
-    public GameObject exit_stairs;
+    public GameObject exit;
     public GameObject[] obstacles;
+    public GameObject lever;
+
 
     private List<Vector2> obstaclePositions = new List<Vector2>();
     private int leverRangeX;
     private int leverRangeY;
+    
     
 
 
@@ -25,7 +28,10 @@ public class BoardManager : MonoBehaviour {
     {
         InitList();
         CreateBoard();
-        LayoutAtRandomPosition(obstacles, 6);
+        LayoutAtRandomPosition(1, lever);
+        LayoutAtRandomPosition(1, exit);
+        LayoutAtRandomPosition(obstacleCount, obstacles);
+        
     }
 
     void InitList()
@@ -54,14 +60,6 @@ public class BoardManager : MonoBehaviour {
                 if (x == -1 || x == columns || y == -1 || y == rows)                   
                     toInstantiate = outerWallTiles;
 
-                if (x == columns - 1 && y == rows - 1)
-                {
-                    toInstantiate = doors;
-                    GameObject stairsInstance = Instantiate(exit_stairs, new Vector2(x, y), Quaternion.identity) as GameObject;
-                    stairsInstance.transform.SetParent(boardHolder);
-                }
-                    
-
                 GameObject instance = Instantiate(toInstantiate, new Vector2(x, y), Quaternion.identity) as GameObject;
                 instance.transform.SetParent(boardHolder);
 
@@ -78,14 +76,13 @@ public class BoardManager : MonoBehaviour {
         return randomVector;
     }
 
-    void LayoutAtRandomPosition(GameObject[] items, int count)
+    void LayoutAtRandomPosition(int count, params GameObject[] items)
     {
         for (int i = 0; i < count; i++)
 		{
             Instantiate(items[Random.Range(0, items.Length)], GetRandomPosition(), Quaternion.identity);
 		}
     }
-
-    
+   
 	
 }
