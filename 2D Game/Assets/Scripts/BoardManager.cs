@@ -12,6 +12,7 @@ public class BoardManager : MonoBehaviour {
     public GameObject floorTiles;
     public GameObject exit;
     public GameObject[] obstacles;
+    public GameObject chest;
     public GameObject lever;
 
 
@@ -30,6 +31,7 @@ public class BoardManager : MonoBehaviour {
         CreateBoard();
         LayoutAtRandomPosition(1, lever);
         LayoutAtRandomPosition(1, exit);
+        LayoutAtRandomPosition(3, chest);
         LayoutAtRandomPosition(obstacleCount, obstacles);
         
     }
@@ -80,7 +82,8 @@ public class BoardManager : MonoBehaviour {
     {
         for (int i = 0; i < count; i++)
 		{
-            Instantiate(items[Random.Range(0, items.Length)], GetRandomPosition(), Quaternion.identity);
+            GameObject instance = Instantiate(items[Random.Range(0, items.Length)], GetRandomPosition(), Quaternion.identity) as GameObject;
+            instance.transform.SetParent(boardHolder);
 		}
     }
    
