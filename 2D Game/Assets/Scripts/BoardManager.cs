@@ -6,7 +6,6 @@ public class BoardManager : MonoBehaviour {
 
     public int columns;
     public int rows;
-    public int obstacleCount;
     private int level;
 
     public GameObject outerWallTiles;
@@ -34,7 +33,7 @@ public class BoardManager : MonoBehaviour {
         LayoutAtRandomPosition(1, lever);
         LayoutAtRandomPosition(1, exit);
         LayoutAtRandomPosition((int) Mathf.Sqrt(level), chest);
-        LayoutObstacles(rows*columns/3, obstacles);
+        LayoutObstacles((int)Mathf.Sqrt(rows*columns)*2, obstacles);
         
     }
 
@@ -49,7 +48,6 @@ public class BoardManager : MonoBehaviour {
             GameObject obstacle = obstacles[Random.Range(0, obstacles.Length)];
             foreach (Vector2 pos in itemPositions)
             {
-                Debug.Log("instatiating a " + obstacle);
                 GameObject instance = Instantiate(obstacle, pos, Quaternion.identity) as GameObject;
                 instance.transform.SetParent(boardHolder);
             }
