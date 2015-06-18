@@ -1,0 +1,9 @@
+git add -A   -to add 
+
+git commit -m "lalalalala"   - to send message to peasants.
+
+git push     - to send out.
+
+
+
+git pull - to get free stuff from my peasants.
