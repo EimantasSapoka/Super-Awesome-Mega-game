@@ -3,9 +3,11 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-    public GameManager instance;
+    public static GameManager instance;
     public BoardManager boardManager;
     private int level = 1;
+
+    [HideInInspector] public bool playerMove = true;
 
 	// Use this for initialization
 	void Awake () {

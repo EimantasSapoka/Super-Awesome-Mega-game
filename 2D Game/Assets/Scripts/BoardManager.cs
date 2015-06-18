@@ -42,7 +42,6 @@ public class BoardManager : MonoBehaviour {
             int closeItems = Random.Range(0, (int) Mathf.Sqrt(obstacleCount));
             closeItems = closeItems == 0 ? 1 : closeItems;
             Vector2[] itemPositions = GetCloseRandomPositions(closeItems);
-            Debug.Log(obstacles.Length);
             GameObject obstacle = obstacles[Random.Range(0, obstacles.Length)];
             foreach (Vector2 pos in itemPositions)
             {
@@ -98,18 +97,25 @@ public class BoardManager : MonoBehaviour {
 
     Vector2[] GetCloseRandomPositions(int numPositions)
     {
+
+        if (numPositions > obstaclePositions.Count)
+        {
+            // safety precaution to ensure an infinite loop does not happen. 
+            return null;
+        }
+
         Vector2[] positions = new Vector2[numPositions];
         int seedPosition = Random.Range(0, obstaclePositions.Count);
 
+        while (obstaclePositions.Count  < seedPosition + numPositions)
+        {
+            seedPosition = Random.Range(0, obstaclePositions.Count);
+        }
+
         for (int i = 0; i < numPositions; i++)
         {
-            int nextPosition = 0;
-            if (obstaclePositions.Count > seedPosition + i)
-                nextPosition = seedPosition + 1;
-            else
-                nextPosition = seedPosition - 1;
-            positions[i] = obstaclePositions[nextPosition];
-            obstaclePositions.RemoveAt(nextPosition);
+            positions[i] = obstaclePositions[seedPosition];
+            obstaclePositions.RemoveAt(seedPosition);
         }
 
         return positions;
