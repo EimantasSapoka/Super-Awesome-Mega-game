@@ -44,11 +44,17 @@ public class BoardManager : MonoBehaviour {
                 GameObject instance = Instantiate(toInstantiate, new Vector2(x, y), Quaternion.identity) as GameObject;
                 instance.transform.SetParent(boardHolder);
 
-                
+
                 if (x == -1)
-                    instance.transform.Rotate(new Vector3(0, 0, 270));
+                    if (y == -1)
+                        instance.transform.Rotate(new Vector3(0, 0, 0));
+                    else
+                        instance.transform.Rotate(new Vector3(0, 0, 270));
                 else if (x == columns)
-                    instance.transform.Rotate(new Vector3(0, 0, -270));
+                    if (y == rows)
+                        instance.transform.Rotate(new Vector3(0, 0, 180));
+                    else
+                        instance.transform.Rotate(new Vector3(0, 0, -270));
                 
 
                 if (y == rows && x<columns && x > -1)
