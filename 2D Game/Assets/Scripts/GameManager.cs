@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
@@ -7,7 +8,11 @@ public class GameManager : MonoBehaviour {
     public BoardManager boardManager;
     private int level = 1;
 
-    [HideInInspector] public bool playerMove = true;
+    public float turnTime = .05f;
+    public List<Enemy> enemies = new List<Enemy>();
+
+    [HideInInspector] public bool playerMove;
+    bool enemiesMove;
 
 	// Use this for initialization
 	void Awake () {
@@ -23,5 +28,27 @@ public class GameManager : MonoBehaviour {
         
         boardManager.LoadLevel(level);
 	}
+
+    void Update()
+    {
+        if (playerMove || enemiesMove)
+        {
+            return;
+        }
+        StartCoroutine(PerformTurn());
+    }
+
+    IEnumerator PerformTurn()
+    {
+        enemiesMove = true;
+
+        if (enemies.Count == 0)
+        {
+            yield return new WaitForSeconds(turnTime);
+        }
+
+        playerMove = true;
+        enemiesMove = false;
+    }
 	
 }

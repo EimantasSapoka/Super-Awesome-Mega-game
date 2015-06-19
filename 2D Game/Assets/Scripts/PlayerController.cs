@@ -28,24 +28,28 @@ public class PlayerController : Moveable {
 
         if (horizontal != 0 || vertical != 0)
         {
-            if (horizontal < 0)
-            {
-                animator.SetTrigger("walk_left");
-            }
-            else if (horizontal > 0)
-            {
-                animator.SetTrigger("walk_right");
-            }
-            else if (vertical < 0)
-            {
-                animator.SetTrigger("walk_down");
-            }
-            else if (vertical > 0) 
-            {
-                animator.SetTrigger("walk_up");
-            }
-            GameManager.instance.playerMove = false;
-            Move(horizontal, vertical);
+            AttemptMove(horizontal, vertical);
+            triggerMoveAnimations(horizontal, vertical);
         }
 	}
+
+    private void triggerMoveAnimations(int horizontal, int vertical)
+    {
+        if (horizontal < 0)
+        {
+            animator.SetTrigger("walk_left");
+        }
+        else if (horizontal > 0)
+        {
+            animator.SetTrigger("walk_right");
+        }
+        else if (vertical < 0)
+        {
+            animator.SetTrigger("walk_down");
+        }
+        else if (vertical > 0)
+        {
+            animator.SetTrigger("walk_up");
+        }
+    }
 }
