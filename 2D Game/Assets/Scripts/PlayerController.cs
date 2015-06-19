@@ -13,27 +13,19 @@ public class PlayerController : Moveable {
 	// Update is called once per frame
 	void Update()
     {
-        if (!GameManager.instance.playerMove)
-        {
-            return;
-        }
-        
-        int horizontal = (int) Input.GetAxisRaw("Horizontal");
-        int vertical = (int) Input.GetAxisRaw("Vertical");
+        float horizontal =  Input.GetAxis("Horizontal");
+        float vertical =  Input.GetAxis("Vertical");
 
-        if (horizontal != 0 && vertical != 0)
-        {
-            vertical = 0;
-        }
+       
 
         if (horizontal != 0 || vertical != 0)
         {
             AttemptMove(horizontal, vertical);
-            triggerMoveAnimations(horizontal, vertical);
+            //triggerMoveAnimations(horizontal, vertical);
         }
 	}
 
-    private void triggerMoveAnimations(int horizontal, int vertical)
+    private void triggerMoveAnimations(float horizontal, float vertical)
     {
         if (horizontal < 0)
         {

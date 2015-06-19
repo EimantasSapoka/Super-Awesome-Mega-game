@@ -17,11 +17,10 @@ public class Moveable : MonoBehaviour {
         blockingLayer = LayerMask.GetMask("BlockingLayer");
 	}
 
-    protected bool Move(int xDir, int yDir, out RaycastHit2D hit)
+    protected bool Move(float xDir, float yDir, out RaycastHit2D hit)
     {
-        Vector2 end = (Vector2) transform.position + new Vector2(xDir, yDir);   
-
-        hit = Physics2D.Linecast(transform.position, end, blockingLayer);
+        Vector3 end = new Vector3(xDir, yDir, 0)*Time.deltaTime*3;
+        hit = Physics2D.Linecast(transform.position,transform.position + end, blockingLayer);
 
         if (hit.transform != null)
         {
@@ -29,12 +28,16 @@ public class Moveable : MonoBehaviour {
             
             return false;
         }
+        else
+        {
+            transform.position += end;
+            return true;
+        }
 
-        StartCoroutine(SmoothMovement(end));
-        return true;
+        
     }
 
-    protected virtual bool AttemptMove(int xDir, int yDir)
+    protected virtual bool AttemptMove(float xDir, float yDir)
     {
         RaycastHit2D hit;
         bool moved = Move(xDir, yDir, out hit);
@@ -42,15 +45,14 @@ public class Moveable : MonoBehaviour {
         return moved;
     }
 
-    IEnumerator SmoothMovement(Vector2 end)
+    void SmoothMovement(Vector2 end)
     {
         float sqrRemainingDistance = ((Vector2)transform.position - end).sqrMagnitude;
-        while (sqrRemainingDistance > float.Epsilon)
+        if (sqrRemainingDistance > float.Epsilon)
         {
             Vector2 newPosition = Vector2.MoveTowards(rb2d.position, end, inverseMoveTime * Time.deltaTime);
             rb2d.MovePosition(newPosition);
-            sqrRemainingDistance = ((Vector2) transform.position - end).sqrMagnitude;
-            yield return null;
+            
         }
     }
 }
