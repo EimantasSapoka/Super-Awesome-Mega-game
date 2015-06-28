@@ -74,14 +74,20 @@ public class BoardManager : MonoBehaviour {
         {
             for (int y = -1; y < rows+1; y++)
             {
-                GameObject toInstantiate = floorTiles;
+                if (x == -1 || x == columns || y == -1 || y == rows)
+                {
+                    GameObject instance = Instantiate(outerWallTiles, new Vector2(x, y), Quaternion.identity) as GameObject;
+                    instance.transform.SetParent(boardHolder);
+                }                
+            }
+        }
 
-                if (x == -1 || x == columns || y == -1 || y == rows)                   
-                    toInstantiate = outerWallTiles;
-
-                GameObject instance = Instantiate(toInstantiate, new Vector2(x, y), Quaternion.identity) as GameObject;
+        for (int x = 0; x < columns; x+=2)
+        {
+            for (int y = 0; y < rows; y+=2)
+            {
+                GameObject instance = Instantiate(floorTiles, new Vector2(x, y), Quaternion.identity) as GameObject;
                 instance.transform.SetParent(boardHolder);
-
             }
         }
 
